@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.env
+instance/
+*.db
+.vscode/
+.idea/
+uploads/
+*.log
+migrations/versions/__pycache__/
+.pytest_cache/
