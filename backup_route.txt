@@ -1,0 +1,15 @@
+@admin_bp.route("/backup")
+def backup():
+    logs = BackupLog.query.order_by(
+        BackupLog.created_at.desc()
+    ).limit(20).all()
+
+    storage = get_storage_stats()
+    db_backups = list_recent_db_backups(limit=10)
+
+    return render_template(
+        "admin/backup.html",
+        logs=logs,
+        storage=storage,
+        db_backups=db_backups,
+    )

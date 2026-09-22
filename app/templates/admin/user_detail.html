@@ -1,0 +1,226 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'users' %}
+
+{% block title %}User Details - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>User Details</h3>
+    <a href="{{ url_for('admin.users') }}" class="btn btn-outline-secondary">
+        ← Back to Users
+    </a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h5>{{ user.full_name }}</h5>
+
+        <p class="mb-1">
+            <strong>Email:</strong> {{ user.email }}
+        </p>
+
+        <p class="mb-1">
+            <strong>Role:</strong> {{ user.role }}
+        </p>
+
+        <p class="mb-1">
+            <strong>Department:</strong> {{ user.department or 'Not specified' }}
+        </p>
+
+        <p class="mb-1">
+            <strong>Semester:</strong> {{ user.semester or 'Not specified' }}
+        </p>
+
+        <p class="mb-1">
+            <strong>Points:</strong> {{ user.points or 0 }}
+        </p>
+
+        <p class="mb-0">
+            <strong>Status:</strong>
+            {% if user.is_active_flag %}
+                <span class="badge bg-success">Active</span>
+            {% else %}
+                <span class="badge bg-danger">Inactive</span>
+            {% endif %}
+        </p>
+
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h5 class="mb-3">Uploaded Notes</h5>
+
+        {% if notes %}
+
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Downloads</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for note in notes %}
+
+            <tr>
+                <td>{{ note.title }}</td>
+                <td>{{ note.subject or '-' }}</td>
+
+                <td>
+                    {% if note.approval_status == 'APPROVED' %}
+                        <span class="badge bg-success">Approved</span>
+                    {% elif note.approval_status == 'PENDING' %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% else %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ note.download_count or 0 }}</td>
+
+                <td class="small">
+                    {{ note.uploaded_at.strftime("%d %b %Y") }}
+                </td>
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            This user has not uploaded any notes.
+        </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h5 class="mb-3">Note Requests</h5>
+
+        {% if reqs %}
+
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Semester</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for req in reqs %}
+
+            <tr>
+                <td>{{ req.subject or '-' }}</td>
+                <td>{{ req.semester or '-' }}</td>
+
+                <td>
+                    {% if req.status == 'OPEN' %}
+                        <span class="badge bg-warning text-dark">Open</span>
+                    {% else %}
+                        <span class="badge bg-success">Fulfilled</span>
+                    {% endif %}
+                </td>
+
+                <td class="small">
+                    {{ req.created_at.strftime("%d %b %Y") }}
+                </td>
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            No note requests found.
+        </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h5 class="mb-3">Quiz Attempts</h5>
+
+        {% if attempts %}
+
+        <div class="table-responsive">
+        <table class="table table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Quiz</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for attempt in attempts %}
+
+            <tr>
+                <td>{{ attempt.quiz.title if attempt.quiz else 'Quiz #' ~ attempt.quiz_id }}</td>
+                <td>{{ attempt.score or 0 }}</td>
+
+                <td class="small">
+                    {{ attempt.attempted_at.strftime("%d %b %Y") }}
+                </td>
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            No quiz attempts found.
+        </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

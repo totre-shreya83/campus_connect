@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Placement Corner - CampusConnect{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-1">Placement Corner</h3>
+
+<p class="text-muted mb-4">
+    Everything you need to prepare for placements, in one place.
+</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-3">
+
+    {% for key, info in sections.items() %}
+
+    <div class="col">
+
+        <a
+            href="{{ url_for('placement.section_view', section=key) }}"
+            class="text-decoration-none"
+        >
+
+            <div class="card h-100 shadow-sm text-dark">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        {{ info.label }}
+                    </h5>
+
+                    <p class="card-text small text-muted">
+                        {{ info.desc }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+
+    <div class="col">
+
+    <a
+        href="{{ url_for('quiz.hub') }}"
+        class="text-decoration-none"
+    >
+
+        <div class="card h-100 shadow-sm text-dark border-primary">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    Mock Quiz
+                </h5>
+
+                <p class="card-text small text-muted">
+                    Randomized MCQ mock tests with leaderboard.
+                </p>
+
+            </div>
+
+        </div>
+
+    </a>
+
+</div>
+
+</div>
+
+
+{% if current_user.is_admin() %}
+
+<div class="mt-4">
+
+    <a
+        href="{{ url_for('placement.add_resource') }}"
+        class="btn btn-outline-primary btn-sm"
+    >
+        + Add Resource
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

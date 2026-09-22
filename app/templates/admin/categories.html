@@ -1,0 +1,138 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'categories' %}
+
+{% block title %}Manage Categories - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-4">Categories</h3>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <h5 class="mb-3">Add Category</h5>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+
+                {% for error in form.name.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control") }}
+
+                {% for error in form.description.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="btn btn-primary") }}
+
+        </form>
+
+    </div>
+</div>
+
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <h5 class="mb-3">Existing Categories</h5>
+
+        {% if categories %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Notes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for category in categories %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ category.name }}</strong>
+                    </td>
+
+                    <td>
+                        {{ category.description or '-' }}
+                    </td>
+
+                    <td>
+                        {{ category.notes|length }}
+                    </td>
+
+                    <td>
+
+                        {% if category.notes|length == 0 %}
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('admin.delete_category', category_id=category.id) }}"
+                            class="d-inline"
+                            onsubmit="return confirm('Delete this category?');"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="{{ csrf_token() }}"
+                            >
+
+                            <button class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+
+                        </form>
+
+                        {% else %}
+
+                        <span class="text-muted small">
+                            In use
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            No categories created yet.
+        </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

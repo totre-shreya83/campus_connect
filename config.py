@@ -19,6 +19,7 @@ class Config:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_REGION = os.environ.get("AWS_REGION", "ap-south-1")
     S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
+    BACKUP_PREFIX = os.environ.get("BACKUP_PREFIX", "backups/db/")
 
     MAX_CONTENT_LENGTH = 20 * 1024 * 1024
 

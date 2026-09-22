@@ -1,0 +1,146 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ req.subject }} - Request - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm mb-4">
+
+  <div class="card-body">
+
+    <div class="d-flex justify-content-between">
+
+      <h3>{{ req.subject }} — Sem {{ req.semester }}</h3>
+
+      <span class="badge bg-{{ 'success' if req.status == 'FULFILLED' else 'warning' }}">
+        {{ req.status }}
+      </span>
+
+    </div>
+
+    <p class="text-muted small">
+      Requested by {{ req.requester.full_name }}
+      on {{ req.created_at.strftime("%d %b %Y") }}
+    </p>
+
+    <p>{{ req.description }}</p>
+
+    {% if req.department %}
+      <p class="small text-muted">
+        Department: {{ req.department }}
+      </p>
+    {% endif %}
+
+    {% if req.requester_id == current_user.id and req.status == 'OPEN' %}
+
+    <form method="POST"
+          action="{{ url_for('requests.fulfill', request_id=req.id) }}"
+          onsubmit="return confirm('Mark this request as fulfilled?');">
+
+      {{ form.hidden_tag() }}
+
+      <button class="btn btn-sm btn-outline-success">
+        Mark as Fulfilled
+      </button>
+
+    </form>
+
+    {% endif %}
+
+  </div>
+
+</div>
+
+
+<h5>Replies ({{ req.replies|length }})</h5>
+
+{% if req.replies %}
+
+  {% for reply in req.replies %}
+
+  <div class="card mb-2">
+
+    <div class="card-body">
+
+      <p class="mb-1">
+
+        <strong>{{ reply.responder.full_name }}</strong>
+
+        <span class="text-muted small">
+          {{ reply.created_at.strftime("%d %b %Y") }}
+        </span>
+
+      </p>
+
+      {% if reply.message %}
+        <p>{{ reply.message }}</p>
+      {% endif %}
+
+      {% if reply.note_id %}
+
+        <a href="{{ url_for('notes.view', note_id=reply.note_id) }}"
+           class="btn btn-sm btn-outline-primary">
+          View attached note
+        </a>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  {% endfor %}
+
+{% else %}
+
+  <p class="text-muted">
+    No replies yet.
+  </p>
+
+{% endif %}
+
+
+{% if req.status == 'OPEN' %}
+
+<div class="card mt-4">
+
+  <div class="card-body">
+
+    <h5>Reply to this request</h5>
+
+    <form method="POST"
+          action="{{ url_for('requests.reply', request_id=req.id) }}"
+          enctype="multipart/form-data">
+
+      {{ form.hidden_tag() }}
+
+      <div class="mb-3">
+
+        {{ form.message.label(class="form-label") }}
+
+        {{ form.message(
+            class="form-control",
+            rows=2
+        ) }}
+
+      </div>
+
+      <div class="mb-3">
+
+        {{ form.file.label(class="form-label") }}
+
+        {{ form.file(class="form-control") }}
+
+      </div>
+
+      {{ form.submit(class="btn btn-primary") }}
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+

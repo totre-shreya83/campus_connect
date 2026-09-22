@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}View Note{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>?? {{ note.title }}</h2>
+
+        <a
+            href="{{ url_for('notes.list_notes') }}"
+            class="btn btn-secondary"
+        >
+            Back to Notes
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <div class="mb-3">
+                <strong>Subject:</strong>
+                {{ note.subject }}
+            </div>
+
+            <div class="mb-3">
+                <strong>Semester:</strong>
+                {{ note.semester }}
+            </div>
+
+            <div class="mb-3">
+                <strong>Department:</strong>
+                {{ note.department }}
+            </div>
+
+            {% if note.faculty %}
+                <div class="mb-3">
+                    <strong>Faculty:</strong>
+                    {{ note.faculty }}
+                </div>
+            {% endif %}
+
+            {% if note.description %}
+                <div class="mb-3">
+                    <strong>Description:</strong>
+                    <p class="mt-1">{{ note.description }}</p>
+                </div>
+            {% endif %}
+
+            {% if note.keywords %}
+                <div class="mb-3">
+                    <strong>Keywords:</strong>
+                    {{ note.keywords }}
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <strong>File:</strong>
+                {{ note.file_name }}
+            </div>
+
+            <div class="mb-3">
+                <strong>Status:</strong>
+
+                {% if note.approval_status == "APPROVED" %}
+                    <span class="badge bg-success">APPROVED</span>
+                {% elif note.approval_status == "REJECTED" %}
+                    <span class="badge bg-danger">REJECTED</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">PENDING</span>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <strong>Downloads:</strong>
+                {{ note.download_count or 0 }}
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <a
+                    href="{{ url_for('notes.download', note_id=note.id) }}"
+                    class="btn btn-success"
+                >
+                    ? Download
+                </a>
+
+                {% if note.uploader_id == current_user.id %}
+                    <a
+                        href="{{ url_for('notes.edit', note_id=note.id) }}"
+                        class="btn btn-outline-primary"
+                    >
+                        ? Edit
+                    </a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

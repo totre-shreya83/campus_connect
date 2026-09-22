@@ -1,0 +1,106 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'placement' %}
+
+{% block title %}Manage Placement Resources - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-3">Placement Resources</h3>
+
+{% if resources %}
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+    <thead>
+        <tr>
+            <th>Section</th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Created</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for resource in resources %}
+
+    <tr>
+
+        <td>
+            <span class="badge bg-secondary">
+                {{ resource.section }}
+            </span>
+        </td>
+
+        <td>
+            <strong>{{ resource.title }}</strong>
+        </td>
+
+        <td class="small">
+            {% if resource.s3_key %}
+                Uploaded File
+            {% elif resource.external_link %}
+                External Link
+            {% else %}
+                Text
+            {% endif %}
+        </td>
+
+        <td class="small">
+            {{ resource.created_at.strftime("%d %b %Y") }}
+        </td>
+
+        <td>
+
+            <form
+                method="POST"
+                action="{{ url_for('admin.delete_resource', resource_id=resource.id) }}"
+                class="d-inline"
+                onsubmit="return confirm('Delete this placement resource?');"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button class="btn btn-sm btn-outline-danger">
+                    Delete
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<div class="text-center py-5">
+
+    <h5 class="text-muted">
+        No placement resources yet.
+    </h5>
+
+    <p class="text-muted small">
+        Placement resources can be added from the Placement section.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

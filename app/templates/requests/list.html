@@ -1,0 +1,110 @@
+﻿{% extends "base.html" %}
+{% block title %}Note Requests - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Open Note Requests</h3>
+  <a href="{{ url_for('requests.create') }}" class="btn btn-primary">
+    Post a Request
+  </a>
+</div>
+
+<form class="row g-2 mb-4" method="GET">
+
+  <div class="col-md-4">
+    <input class="form-control"
+           name="subject"
+           placeholder="Subject"
+           value="{{ args.get('subject','') }}">
+  </div>
+
+  <div class="col-md-2">
+    <input class="form-control"
+           name="semester"
+           placeholder="Semester"
+           value="{{ args.get('semester','') }}">
+  </div>
+
+  <div class="col-md-2">
+    <button class="btn btn-outline-secondary w-100">
+      Filter
+    </button>
+  </div>
+
+</form>
+
+{% if requests %}
+
+<div class="list-group">
+
+  {% for req in requests %}
+
+  <a href="{{ url_for('requests.view', request_id=req.id) }}"
+     class="list-group-item list-group-item-action">
+
+    <div class="d-flex justify-content-between">
+
+      <strong>
+        {{ req.subject }} — Sem {{ req.semester }}
+      </strong>
+
+      <span class="text-muted small">
+        {{ req.created_at.strftime("%d %b %Y") }}
+      </span>
+
+    </div>
+
+    <p class="mb-0 small text-muted">
+      {{ req.description[:120] }}
+    </p>
+
+  </a>
+
+  {% endfor %}
+
+</div>
+
+<nav class="mt-4">
+
+  <ul class="pagination">
+
+    {% if pagination.has_prev %}
+
+    <li class="page-item">
+
+      <a class="page-link"
+         href="{{ url_for('requests.list_requests', page=pagination.prev_num, **args) }}">
+        Previous
+      </a>
+
+    </li>
+
+    {% endif %}
+
+    {% if pagination.has_next %}
+
+    <li class="page-item">
+
+      <a class="page-link"
+         href="{{ url_for('requests.list_requests', page=pagination.next_num, **args) }}">
+        Next
+      </a>
+
+    </li>
+
+    {% endif %}
+
+  </ul>
+
+</nav>
+
+{% else %}
+
+<p class="text-muted text-center py-5">
+  No open requests right now.
+</p>
+
+{% endif %}
+
+{% endblock %}

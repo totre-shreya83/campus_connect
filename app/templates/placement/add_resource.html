@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Add Resource - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h3 class="mb-3">
+                    Add Placement Resource
+                </h3>
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    novalidate
+                >
+
+                    {{ form.hidden_tag() }}
+
+
+                    <div class="mb-3">
+
+                        {{ form.section.label(class="form-label") }}
+
+                        {{ form.section(class="form-select") }}
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        {{ form.title.label(class="form-label") }}
+
+                        {{ form.title(class="form-control") }}
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        {{ form.content.label(class="form-label") }}
+
+                        {{ form.content(
+                            class="form-control",
+                            rows=4
+                        ) }}
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        {{ form.external_link.label(class="form-label") }}
+
+                        {{ form.external_link(
+                            class="form-control",
+                            placeholder="https://leetcode.com/"
+                        ) }}
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        {{ form.file.label(class="form-label") }}
+
+                        {{ form.file(class="form-control") }}
+
+                    </div>
+
+
+                    {{ form.submit(
+                        class="btn btn-primary w-100"
+                    ) }}
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

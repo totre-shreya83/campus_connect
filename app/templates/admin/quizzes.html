@@ -1,0 +1,96 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'quizzes' %}
+
+{% block title %}Manage Quizzes - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-3">Quiz Banks</h3>
+
+{% if quiz_stats %}
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+    <thead>
+        <tr>
+            <th>Quiz</th>
+            <th>Questions</th>
+            <th>Attempts</th>
+            <th>Average Score</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for item in quiz_stats %}
+
+    <tr>
+
+        <td>
+            <strong>{{ item.quiz.title }}</strong>
+
+            {% if item.quiz.description %}
+                <div class="small text-muted">
+                    {{ item.quiz.description }}
+                </div>
+            {% endif %}
+        </td>
+
+        <td>
+            {{ item.question_count }}
+        </td>
+
+        <td>
+            {{ item.attempt_count }}
+        </td>
+
+        <td>
+            {{ "%.2f"|format(item.avg_score) }}
+        </td>
+
+        <td>
+
+            <form
+                method="POST"
+                action="{{ url_for('admin.delete_quiz', quiz_id=item.quiz.id) }}"
+                class="d-inline"
+                onsubmit="return confirm('Delete this quiz bank and its questions?');"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button class="btn btn-sm btn-outline-danger">
+                    Delete
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<p class="text-muted text-center py-5">
+    No quiz banks found.
+</p>
+
+{% endif %}
+
+{% endblock %}

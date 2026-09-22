@@ -10,3 +10,4 @@ uploads/
 *.log
 migrations/versions/__pycache__/
 .pytest_cache/
+backups/

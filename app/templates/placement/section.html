@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{{ section_info.label }} - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+        <h3>{{ section_info.label }}</h3>
+
+        <p class="text-muted small mb-0">
+            {{ section_info.desc }}
+        </p>
+    </div>
+
+    {% if current_user.is_admin() %}
+
+    <a
+        href="{{ url_for('placement.add_resource') }}"
+        class="btn btn-outline-primary btn-sm"
+    >
+        + Add Resource
+    </a>
+
+    {% endif %}
+
+</div>
+
+
+{% if section_key == "CODING" %}
+
+<div class="alert alert-info small">
+
+    Coding practice is hosted on
+    <a
+        href="https://leetcode.com"
+        target="_blank"
+        rel="noopener"
+    >
+        LeetCode
+    </a>.
+
+    Use the available resources below for coding preparation.
+
+</div>
+
+{% endif %}
+
+
+{% if resources %}
+
+<div class="list-group">
+
+    {% for r in resources %}
+
+    <a
+        href="{{ url_for('placement.view_resource', resource_id=r.id) }}"
+        class="list-group-item list-group-item-action"
+    >
+
+        <div class="d-flex justify-content-between">
+
+            <strong>
+                {{ r.title }}
+            </strong>
+
+            <span class="text-muted small">
+
+                {% if r.external_link %}
+                <span class="badge bg-secondary">
+                    Link
+                </span>
+                {% endif %}
+
+                {% if r.s3_key %}
+                <span class="badge bg-secondary">
+                    File
+                </span>
+                {% endif %}
+
+            </span>
+
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<p class="text-muted text-center py-5">
+    No resources here yet.
+</p>
+
+{% endif %}
+
+
+<a
+    href="{{ url_for('placement.hub') }}"
+    class="btn btn-link mt-3"
+>
+    ? Back to Placement Corner
+</a>
+
+{% endblock %}

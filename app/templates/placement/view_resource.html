@@ -1,0 +1,63 @@
+﻿{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h3>{{ resource.title }}</h3>
+
+        <p class="text-muted small">
+            {{ resource.section|title }}
+            • Added {{ resource.created_at.strftime("%d %b %Y") }}
+        </p>
+
+
+        {% if resource.content %}
+
+        <div class="mb-3">
+            {{ resource.content|replace('\n', '<br>')|safe }}
+        </div>
+
+        {% endif %}
+
+
+        {% if resource.external_link %}
+
+        <a href="{{ resource.external_link }}" target="_blank" rel="noopener" class="btn btn-outline-primary">
+            Open External Resource ?
+        </a>
+
+        {% endif %}
+
+
+        {% if resource.s3_key %}
+
+        <a href="{{ url_for('placement.download_resource', resource_id=resource.id) }}" class="btn btn-primary">
+            Download File
+        </a>
+
+        {% endif %}
+
+        {% if current_user.is_admin() %}
+        <form method="POST" action="{{ url_for('placement.delete_resource', resource_id=resource.id) }}"
+            class="d-inline" onsubmit="return confirm('Are you sure you want to delete this resource?');">
+            <button type="submit" class="btn btn-danger">
+                Delete Resource
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<a href="{{ url_for('placement.section_view', section=resource.section) }}" class="btn btn-link mt-3">
+    ? Back
+</a>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+﻿{% extends "base.html" %}
+{% block title %}Post a Request - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+  <div class="col-md-6">
+
+    <div class="card shadow-sm">
+
+      <div class="card-body">
+
+        <h3 class="mb-3">Post a Note Request</h3>
+
+        <form method="POST" novalidate>
+
+          {{ form.hidden_tag() }}
+
+          <div class="row">
+
+            <div class="col-md-8 mb-3">
+              {{ form.subject.label(class="form-label") }}
+              {{ form.subject(class="form-control") }}
+            </div>
+
+            <div class="col-md-4 mb-3">
+              {{ form.semester.label(class="form-label") }}
+              {{ form.semester(class="form-control") }}
+            </div>
+
+          </div>
+
+          <div class="mb-3">
+            {{ form.department.label(class="form-label") }}
+            {{ form.department(class="form-control") }}
+          </div>
+
+          <div class="mb-3">
+
+            {{ form.description.label(class="form-label") }}
+
+            {{ form.description(
+                class="form-control",
+                rows=3,
+                placeholder="e.g. Need DBMS Unit 5 handwritten notes."
+            ) }}
+
+          </div>
+
+          {{ form.submit(class="btn btn-primary w-100") }}
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

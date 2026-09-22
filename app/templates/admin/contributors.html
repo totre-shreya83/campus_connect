@@ -1,0 +1,76 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'contributors' %}
+
+{% block title %}Contributors - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-3">Contributor Analytics</h3>
+
+{% if leaders %}
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Points</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    {% for user in leaders %}
+
+    <tr>
+
+        <td>
+            {{ loop.index }}
+        </td>
+
+        <td>
+            <strong>{{ user.full_name }}</strong>
+        </td>
+
+        <td class="small">
+            {{ user.email }}
+        </td>
+
+        <td>
+            <span class="badge bg-primary">
+                {{ user.points or 0 }}
+            </span>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<div class="text-center py-5">
+
+    <h5 class="text-muted">
+        No contributors yet.
+    </h5>
+
+    <p class="text-muted small">
+        Points will appear here when students contribute approved notes.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

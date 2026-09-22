@@ -1,0 +1,135 @@
+﻿{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'dashboard' %}
+
+{% block title %}Admin Dashboard - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-4">Admin Dashboard</h3>
+
+<div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+
+  {% for label, value in [
+      ("Users", stats.total_users),
+      ("Notes", stats.total_notes),
+      ("Pending", stats.pending_approvals),
+      ("Downloads", stats.total_downloads),
+      ("Open Requests", stats.open_requests),
+      ("Quiz Banks", stats.total_quizzes),
+      ("Questions", stats.total_questions),
+      ("Attempts", stats.total_attempts)
+  ] %}
+
+  <div class="col">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body py-3">
+        <div class="h4 mb-0">{{ value }}</div>
+        <div class="small text-muted">{{ label }}</div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+
+</div>
+
+{% if stats.pending_approvals > 0 %}
+<div class="alert alert-warning">
+  {{ stats.pending_approvals }} note(s) awaiting approval.
+  <a href="{{ url_for('admin.notes', status='PENDING') }}"
+     class="alert-link">
+    Review now
+  </a>
+</div>
+{% endif %}
+
+<div class="row g-3">
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Note Approval Status</h6>
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6>Uploads (last 6 months)</h6>
+        <canvas id="uploadsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="card mt-3 shadow-sm">
+  <div class="card-body">
+
+    <h6>Backup Status</h6>
+
+    {% if last_backup %}
+
+      <p class="mb-0 small">
+        Last backup: {{ last_backup.backup_type }} —
+
+        <span class="badge bg-{{ 'success' if last_backup.status == 'SUCCESS' else 'danger' }}">
+          {{ last_backup.status }}
+        </span>
+
+        on {{ last_backup.created_at.strftime("%d %b %Y") }}
+      </p>
+
+    {% else %}
+
+      <p class="mb-0 small text-muted">
+        No backups recorded yet (see Phase 11).
+      </p>
+
+    {% endif %}
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+<script>
+
+  new Chart(document.getElementById('statusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: {{ chart_status.labels | tojson }},
+      datasets: [{
+        data: {{ chart_status.data | tojson }}
+      }]
+    }
+  });
+
+  new Chart(document.getElementById('uploadsChart'), {
+    type: 'line',
+    data: {
+      labels: {{ chart_uploads.labels | tojson }},
+      datasets: [{
+        label: 'Uploads',
+        data: {{ chart_uploads.data | tojson }},
+        tension: 0.3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            precision: 0
+          }
+        }
+      }
+    }
+  });
+
+</script>
+
+{% endblock %}

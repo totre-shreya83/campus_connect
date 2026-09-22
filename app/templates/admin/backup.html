@@ -1,0 +1,219 @@
+{% extends "admin/base_admin.html" %}
+
+{% set active_page = 'backup' %}
+
+{% block title %}Backup & Recovery - CampusConnect{% endblock %}
+
+{% block admin_content %}
+
+<h3 class="mb-4">Backup & Recovery</h3>
+
+<!-- Storage Information -->
+
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">S3 Objects</h6>
+                <h3>{{ storage.object_count }}</h3>
+                <p class="mb-0 text-muted">
+                    Current objects in bucket
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">Storage Used</h6>
+                <h3>{{ storage.total_size_mb }} MB</h3>
+                <p class="mb-0 text-muted">
+                    Current S3 storage
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="text-muted">S3 Versioning</h6>
+
+                {% if storage.versioning == 'Enabled' %}
+                    <h3 class="text-success">Enabled</h3>
+                {% else %}
+                    <h3 class="text-warning">
+                        {{ storage.versioning }}
+                    </h3>
+                {% endif %}
+
+                <p class="mb-0 text-muted">
+                    File recovery protection
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% if storage.error %}
+
+<div class="alert alert-warning">
+    <strong>Storage information warning:</strong>
+    {{ storage.error }}
+</div>
+
+{% endif %}
+
+
+<!-- Database Backups -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">Recent Database Backups</h5>
+
+        {% if db_backups %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Backup File</th>
+                        <th>Size</th>
+                        <th>Last Modified</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for backup in db_backups %}
+
+                    <tr>
+
+                        <td class="small">
+                            {{ backup.key }}
+                        </td>
+
+                        <td class="small">
+                            {{ backup.size_mb }} MB
+                        </td>
+
+                        <td class="small">
+                            {{ backup.last_modified.strftime("%d %b %Y %H:%M") }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            No database backups found in S3.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- Backup History -->
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">Backup History</h5>
+
+        {% if logs %}
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Backup Type</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                        <th>Size</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for log in logs %}
+
+                    <tr>
+
+                        <td>
+                            {{ log.backup_type }}
+                        </td>
+
+                        <td>
+                            {% if log.status == 'SUCCESS' %}
+                                <span class="badge bg-success">
+                                    SUCCESS
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger">
+                                    {{ log.status }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td class="small">
+                            {{ log.location or '-' }}
+                        </td>
+
+                        <td class="small">
+                            {% if log.size_mb is not none %}
+                                {{ log.size_mb }} MB
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td class="small">
+                            {{ log.created_at.strftime("%d %b %Y %H:%M") }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <p class="text-muted mb-0">
+            No backup history available.
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

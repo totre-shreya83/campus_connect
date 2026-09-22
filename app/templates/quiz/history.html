@@ -1,0 +1,72 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h2 class="mb-4">My Quiz History</h2>
+
+    {% if attempts %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Quiz</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for attempt in attempts %}
+                <tr>
+
+                    <td>
+                        {{ attempt.quiz.title }}
+                    </td>
+
+                    <td>
+                        {{ attempt.score }}
+                    </td>
+
+                    <td>
+                        {{ attempt.attempted_at.strftime('%d-%m-%Y %H:%M') }}
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for(
+                            'quiz.result',
+                            attempt_id=attempt.id
+                        ) }}"
+                           class="btn btn-sm btn-outline-primary">
+                            View Result
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info">
+        You have not attempted any quizzes yet.
+    </div>
+
+    {% endif %}
+
+    <a href="{{ url_for('quiz.hub') }}"
+       class="btn btn-primary">
+        Back to Quiz
+    </a>
+
+</div>
+{% endblock %}
+
