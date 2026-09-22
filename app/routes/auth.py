@@ -43,7 +43,10 @@ def _get_serializer():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for("main.index"))
+        if current_user.is_admin():
+            return redirect(url_for("admin.dashboard"))
+
+        return redirect(url_for("main.dashboard"))
 
     form = RegisterForm()
 
@@ -126,9 +129,13 @@ def login():
 
             next_page = request.args.get("next")
 
-            return redirect(
-                next_page or url_for("main.index")
-            )
+            if next_page:
+                return redirect(next_page)
+
+            if user.is_admin():
+                return redirect(url_for("admin.dashboard"))
+
+            return redirect(url_for("main.dashboard"))
 
         flash(
             "Invalid email or password.",

@@ -6,152 +6,150 @@
 
 {% block admin_content %}
 
-<h3 class="mb-3">Note Requests</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Note Requests</h3>
+
+    <a href="{{ url_for('requests.create') }}"
+       class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i>
+        Post a Request
+    </a>
+</div>
+
+<form class="row g-2 mb-4" method="GET">
+
+    <div class="col-md-4">
+        <input
+            class="form-control"
+            name="subject"
+            placeholder="Search by subject"
+            value="{{ args.get('subject', '') }}"
+        >
+    </div>
+
+    <div class="col-md-2">
+        <input
+            class="form-control"
+            name="semester"
+            placeholder="Semester"
+            value="{{ args.get('semester', '') }}"
+        >
+    </div>
+
+    <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100">
+            <i class="bi bi-search"></i>
+            Filter
+        </button>
+    </div>
+
+</form>
 
 {% if requests %}
 
-<div class="table-responsive">
-
-<table class="table table-hover align-middle">
-
-    <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Semester</th>
-            <th>Department</th>
-            <th>Requester</th>
-            <th>Status</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-
-    <tbody>
+<div class="list-group">
 
     {% for req in requests %}
 
-    <tr>
+    <a
+        href="{{ url_for('requests.view', request_id=req.id) }}"
+        class="list-group-item list-group-item-action"
+    >
 
-        <td>
-            <strong>{{ req.subject or '-' }}</strong>
+        <div class="d-flex justify-content-between align-items-center">
 
-            {% if req.description %}
-                <div class="small text-muted">
-                    {{ req.description }}
-                </div>
-            {% endif %}
-        </td>
+            <strong>
+                {{ req.subject or '-' }} — Sem {{ req.semester or '-' }}
+            </strong>
 
-        <td>
-            {{ req.semester or '-' }}
-        </td>
+            <span class="text-muted small">
+                {{ req.created_at.strftime("%d %b %Y") }}
+            </span>
 
-        <td>
-            {{ req.department or '-' }}
-        </td>
+        </div>
 
-        <td>
+        <div class="small text-muted mt-1">
+            {{ req.department or 'Department not specified' }}
+            ·
             {{ req.requester.full_name if req.requester else 'Unknown' }}
-        </td>
+        </div>
 
-        <td>
+        {% if req.description %}
+
+        <p class="mb-0 small text-muted mt-1">
+            {{ req.description[:120] }}
+            {% if req.description|length > 120 %}...{% endif %}
+        </p>
+
+        {% endif %}
+
+        <div class="mt-2">
 
             {% if req.status == 'OPEN' %}
+
                 <span class="badge bg-warning text-dark">
                     Open
                 </span>
+
             {% else %}
+
                 <span class="badge bg-success">
                     Fulfilled
                 </span>
+
             {% endif %}
 
-        </td>
+        </div>
 
-        <td class="small">
-            {{ req.created_at.strftime("%d %b %Y") }}
-        </td>
-
-    </tr>
+    </a>
 
     {% endfor %}
 
-    </tbody>
-
-</table>
-
 </div>
-
-{% else %}
-
-<p class="text-muted text-center py-5">
-    No note requests found.
-</p>
-
-{% endif %}
-
-
-{% if pagination.pages > 1 %}
 
 <nav class="mt-4">
 
-<ul class="pagination">
+    <ul class="pagination">
 
-    {% if pagination.has_prev %}
+        {% if pagination.has_prev %}
 
-    <li class="page-item">
-        <a
-            class="page-link"
-            href="{{ url_for('admin.requests_list', page=pagination.prev_num) }}"
-        >
-            Previous
-        </a>
-    </li>
-
-    {% endif %}
-
-
-    {% for page_num in pagination.iter_pages() %}
-
-        {% if page_num %}
-
-        <li class="page-item {{ 'active' if page_num == pagination.page }}">
+        <li class="page-item">
 
             <a
                 class="page-link"
-                href="{{ url_for('admin.requests_list', page=page_num) }}"
+                href="{{ url_for('admin.requests_list', page=pagination.prev_num, subject=args.get('subject', ''), semester=args.get('semester', '')) }}"
             >
-                {{ page_num }}
+                Previous
             </a>
 
         </li>
 
-        {% else %}
+        {% endif %}
 
-        <li class="page-item disabled">
-            <span class="page-link">…</span>
+        {% if pagination.has_next %}
+
+        <li class="page-item">
+
+            <a
+                class="page-link"
+                href="{{ url_for('admin.requests_list', page=pagination.next_num, subject=args.get('subject', ''), semester=args.get('semester', '')) }}"
+            >
+                Next
+            </a>
+
         </li>
 
         {% endif %}
 
-    {% endfor %}
-
-
-    {% if pagination.has_next %}
-
-    <li class="page-item">
-        <a
-            class="page-link"
-            href="{{ url_for('admin.requests_list', page=pagination.next_num) }}"
-        >
-            Next
-        </a>
-    </li>
-
-    {% endif %}
-
-</ul>
+    </ul>
 
 </nav>
+
+{% else %}
+
+<p class="text-muted text-center py-5">
+    No requests found.
+</p>
 
 {% endif %}
 

@@ -19,7 +19,7 @@ from app.utils.decorators import admin_required
 from app.services.notification_service import create_notification
 from app.services.points_service import award_points, get_contributor_leaderboard
 from app.services.s3_service import delete_file_from_s3
-from app.services.backup_service import get_storage_stats, list_recent_db_backups
+from app.services.backup_service import get_storage_stats, list_recent_db_backups, run_database_backup
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -392,7 +392,22 @@ def delete_category(category_id):
 def requests_list():
     page = request.args.get("page", 1, type=int)
 
-    pagination = NoteRequest.query.order_by(
+    query = NoteRequest.query
+
+    subject = request.args.get("subject", "").strip()
+    semester = request.args.get("semester", "").strip()
+
+    if subject:
+        query = query.filter(
+            NoteRequest.subject.ilike(f"%{subject}%")
+        )
+
+    if semester and semester.isdigit():
+        query = query.filter(
+            NoteRequest.semester == int(semester)
+        )
+
+    pagination = query.order_by(
         NoteRequest.created_at.desc()
     ).paginate(
         page=page,
@@ -404,8 +419,8 @@ def requests_list():
         "admin/requests.html",
         requests=pagination.items,
         pagination=pagination,
+        args=request.args,
     )
-
 
 @admin_bp.route("/placement")
 def placement():
@@ -512,3 +527,26 @@ def backup():
         storage=storage,
         db_backups=db_backups,
     )
+
+
+
+
+@admin_bp.route("/backup/create", methods=["POST"])
+def create_database_backup():
+    """Create a database backup from the admin panel."""
+
+    result = run_database_backup()
+
+    if result["success"]:
+        flash(
+            "Database backup completed successfully.",
+            "success"
+        )
+    else:
+        flash(
+            "Database backup failed. Check the backup history for details.",
+            "danger"
+        )
+
+    return redirect(url_for("admin.backup"))
+

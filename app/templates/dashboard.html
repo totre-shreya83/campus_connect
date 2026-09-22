@@ -1,0 +1,289 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Dashboard - CampusConnect{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Welcome -->
+
+    <div class="cc-dashboard-header mb-4">
+
+        <div>
+            <span class="cc-section-label">
+                STUDENT DASHBOARD
+            </span>
+
+            <h1 class="cc-dashboard-title">
+                Welcome back, {{ user.full_name }}!
+            </h1>
+
+            <p class="cc-dashboard-subtitle">
+                Continue learning, explore resources, and prepare for your next opportunity.
+            </p>
+        </div>
+
+        <div class="cc-dashboard-avatar">
+            {{ user.full_name[0]|upper }}
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-6 col-xl-3">
+
+            <a
+                href="{{ url_for('notes.search') }}"
+                class="cc-dashboard-card"
+            >
+
+                <div class="cc-dashboard-icon cc-blue">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5V4.5Z"></path>
+                        <path d="M4 4.5v17"></path>
+                        <path d="M8 6h8M8 10h8M8 14h5"></path>
+                    </svg>
+                </div>
+
+                <h5>Explore Notes</h5>
+
+                <p>
+                    Find academic notes and resources shared by students.
+                </p>
+
+                <span>Browse Notes</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <a
+                href="{{ url_for('placement.hub') }}"
+                class="cc-dashboard-card"
+            >
+
+                <div class="cc-dashboard-icon cc-purple">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="3" y="7" width="18" height="13" rx="2"></rect>
+                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"></path>
+                    </svg>
+                </div>
+
+                <h5>Placement Prep</h5>
+
+                <p>
+                    Practice placement resources and prepare for interviews.
+                </p>
+
+                <span>Prepare Now</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <a
+                href="{{ url_for('quiz.hub') }}"
+                class="cc-dashboard-card"
+            >
+
+                <div class="cc-dashboard-icon cc-orange">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 4h14a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Z"></path>
+                        <path d="M5 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2"></path>
+                        <path d="M9 9h6M9 13h6M9 17h3"></path>
+                    </svg>
+                </div>
+
+                <h5>Take a Quiz</h5>
+
+                <p>
+                    Test your knowledge with placement and academic quizzes.
+                </p>
+
+                <span>Start Quiz</span>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <a
+                href="{{ url_for('requests.list_requests') }}"
+                class="cc-dashboard-card"
+            >
+
+                <div class="cc-dashboard-icon cc-green">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 5h16v11H8l-4 4V5Z"></path>
+                        <path d="M8 9h8M8 12h5"></path>
+                    </svg>
+                </div>
+
+                <h5>Resource Requests</h5>
+
+                <p>
+                    Request resources or help from the campus community.
+                </p>
+
+                <span>View Requests</span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Activity Area -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+
+            <div class="cc-dashboard-panel">
+
+                <div class="cc-panel-header">
+
+                    <div>
+                        <span class="cc-section-label">
+                            QUICK START
+                        </span>
+
+                        <h4>
+                            Continue your campus journey
+                        </h4>
+                    </div>
+
+                </div>
+
+
+                <div class="row g-3 mt-1">
+
+                    <div class="col-md-6">
+
+                        <a
+                            href="{{ url_for('notes.upload') }}"
+                            class="cc-quick-action"
+                        >
+
+                            <strong>Share your notes</strong>
+
+                            <small>
+                                Help other students by uploading useful resources.
+                            </small>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <a
+                            href="{{ url_for('requests.create') }}"
+                            class="cc-quick-action"
+                        >
+
+                            <strong>Request a resource</strong>
+
+                            <small>
+                                Ask the community for notes or study material.
+                            </small>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <a
+                            href="{{ url_for('notes.my_uploads') }}"
+                            class="cc-quick-action"
+                        >
+
+                            <strong>My Uploads</strong>
+
+                            <small>
+                                View and manage the notes you have uploaded.
+                            </small>
+
+                        </a>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <a
+                            href="{{ url_for('notifications.list_notifications') }}"
+                            class="cc-quick-action"
+                        >
+
+                            <strong>Check notifications</strong>
+
+                            <small>
+                                Stay updated with activity on CampusConnect.
+                            </small>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="cc-dashboard-panel cc-points-panel">
+
+                <span class="cc-section-label">
+                    YOUR PROGRESS
+                </span>
+
+                <h4>
+                    Campus Contribution
+                </h4>
+
+                <div class="cc-points-number">
+                    {{ user.points or 0 }}
+                </div>
+
+                <p>
+                    contribution points
+                </p>
+
+                <a
+                    href="{{ url_for('auth.profile') }}"
+                    class="btn btn-primary w-100 mt-2"
+                >
+                    View Profile
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

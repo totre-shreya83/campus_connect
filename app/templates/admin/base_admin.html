@@ -7,47 +7,51 @@
     <div class="list-group shadow-sm">
 
       <a href="{{ url_for('admin.dashboard') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'dashboard' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'dashboard' }}">
         Dashboard
       </a>
 
       <a href="{{ url_for('admin.users') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'users' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'users' }}">
         Users
       </a>
 
       <a href="{{ url_for('admin.notes') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'notes' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'notes' }}">
         Notes
       </a>
 
       <a href="{{ url_for('admin.categories') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'categories' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'categories' }}">
         Categories
       </a>
 
       <a href="{{ url_for('admin.requests_list') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'requests' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'requests' }}">
         Requests
       </a>
+      <!-- <a href="{{ url_for('placement.hub') }}"
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'placement_hub' }}">
+        Placement Hub
+      </a> -->
 
       <a href="{{ url_for('admin.placement') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'placement' }}">
-        Placement Resources
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'placement' }}">
+        View Placement Resources
       </a>
 
       <a href="{{ url_for('admin.quizzes') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'quizzes' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'quizzes' }}">
         Quizzes
       </a>
 
       <a href="{{ url_for('admin.backup') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'backup' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'backup' }}">
         Backup &amp; Recovery
       </a>
 
       <a href="{{ url_for('admin.contributors') }}"
-         class="list-group-item list-group-item-action {{ 'active' if active_page == 'contributors' }}">
+        class="list-group-item list-group-item-action {{ 'active' if active_page == 'contributors' }}">
         Analytics
       </a>
 

@@ -1,0 +1,21 @@
+[Unit]
+Description=CampusConnect Gunicorn Service
+After=network.target mysql.service
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/campusconnect
+Environment="PATH=/home/ubuntu/campusconnect/venv/bin"
+EnvironmentFile=/home/ubuntu/campusconnect/.env
+ExecStart=/home/ubuntu/campusconnect/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/home/ubuntu/campusconnect/campusconnect.sock \
+    --access-logfile /home/ubuntu/campusconnect/logs/access.log \
+    --error-logfile /home/ubuntu/campusconnect/logs/error.log \
+    run:app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,51 +1,265 @@
 {% extends "base.html" %}
 
-{% block title %}Profile - CampusConnect{% endblock %}
+{% block title %}My Profile - CampusConnect{% endblock %}
 
 {% block content %}
 
-<div class="card shadow-sm">
+<div class="container py-5">
 
-    <div class="card-body">
+    <!-- Profile Header -->
+    <div class="profile-header shadow-sm">
 
-        <h3>{{ user.full_name }}</h3>
+        <div class="profile-avatar">
+            {{ user.full_name[:1]|upper }}
+        </div>
 
-        <p class="text-muted">
-            {{ user.email }}
-        </p>
+        <div class="profile-header-info">
+            <h1>{{ user.full_name }}</h1>
 
+            <p>{{ user.email }}</p>
 
-        <ul class="list-unstyled">
-
-            <li>
-                <strong>Role:</strong>
+            <span class="profile-role">
                 {{ user.role }}
-            </li>
+            </span>
+        </div>
 
-            <li>
-                <strong>Department:</strong>
-                {{ user.department or "-" }}
-            </li>
+    </div>
 
-            <li>
-                <strong>Semester:</strong>
-                {{ user.semester or "-" }}
-            </li>
 
-            <li>
-                <strong>Points:</strong>
-                {{ user.points }}
-            </li>
+    <!-- Profile Information -->
+    <div class="profile-section">
 
-            <li>
-                <strong>Joined:</strong>
-                {{ user.created_at.strftime("%d %b %Y") }}
-            </li>
+        <div class="section-heading">
+            <h4>Profile Information</h4>
+            <p>Your CampusConnect account details</p>
+        </div>
 
-        </ul>
+        <div class="info-grid">
+
+            <div class="info-item">
+                <span>Department</span>
+                <strong>{{ user.department or "Not provided" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Semester</span>
+                <strong>{{ user.semester or "Not provided" }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Email Address</span>
+                <strong>{{ user.email }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Account Role</span>
+                <strong>{{ user.role }}</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Account Status</span>
+
+                {% if user.is_active_flag %}
+                    <strong class="status-active">
+                        Active
+                    </strong>
+                {% else %}
+                    <strong class="status-inactive">
+                        Inactive
+                    </strong>
+                {% endif %}
+
+            </div>
+
+            <div class="info-item">
+                <span>Member Since</span>
+                <strong>
+                    {{ user.created_at.strftime("%d %b %Y") }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Activity -->
+    <div class="profile-section">
+
+        <div class="section-heading">
+            <h4>CampusConnect Activity</h4>
+            <p>Your contribution to the platform</p>
+        </div>
+
+        <div class="activity-grid">
+
+            <div class="activity-item">
+                <strong>{{ user.points }}</strong>
+                <span>Points Earned</span>
+            </div>
+
+            <div class="activity-item">
+                <strong>
+                    {{ user.created_at.strftime("%d %b %Y") }}
+                </strong>
+                <span>Joined CampusConnect</span>
+            </div>
+
+        </div>
 
     </div>
 
 </div>
+
+
+<style>
+
+.profile-header {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border-radius: 18px;
+    padding: 38px 42px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.profile-avatar {
+    width: 92px;
+    height: 92px;
+    min-width: 92px;
+    border-radius: 50%;
+    background: white;
+    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.profile-header-info h1 {
+    margin: 0 0 6px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.profile-header-info p {
+    margin: 0 0 14px;
+    opacity: .85;
+}
+
+.profile-role {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.18);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .4px;
+}
+
+.profile-section {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 24px;
+}
+
+.section-heading {
+    margin-bottom: 24px;
+}
+
+.section-heading h4 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid #eee;
+    border-left: 1px solid #eee;
+}
+
+.info-item {
+    padding: 20px;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.info-item span {
+    display: block;
+    color: #6c757d;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.info-item strong {
+    font-size: 15px;
+    color: #212529;
+}
+
+.status-active {
+    color: #198754 !important;
+}
+
+.status-inactive {
+    color: #dc3545 !important;
+}
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.activity-item {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.activity-item strong {
+    display: block;
+    font-size: 27px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.activity-item span {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+
+    .profile-header {
+        padding: 30px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-header-info h1 {
+        font-size: 25px;
+    }
+
+    .info-grid,
+    .activity-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
 
 {% endblock %}

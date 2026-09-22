@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}CampusConnect - Learn. Share. Grow.{% endblock %}
+
+{% block content %}
+
+<section class="cc-hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-7">
+
+                <span class="cc-badge">
+                    BUILT FOR STUDENTS
+                </span>
+
+                <h1 class="cc-hero-title">
+                    Learn smarter.<br>
+                    <span>Share better.</span><br>
+                    Grow together.
+                </h1>
+
+                <p class="cc-hero-text">
+                    CampusConnect brings notes, academic resources,
+                    student requests, placement preparation, and mock
+                    quizzes together in one simple platform.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+
+                    <a
+                        href="{{ url_for('auth.register') }}"
+                        class="btn btn-primary btn-lg px-4"
+                    >
+                        Get Started
+                    </a>
+
+                    <a
+                        href="{{ url_for('auth.login') }}"
+                        class="btn btn-light btn-lg px-4 cc-login-btn"
+                    >
+                        Login
+                    </a>
+
+                </div>
+
+                <div class="cc-trust mt-4">
+                    <span>Academic Notes</span>
+                    <span>Placement Prep</span>
+                    <span>Mock Quizzes</span>
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <div class="cc-hero-card">
+
+                    <div class="cc-floating-card cc-card-top">
+                        <div class="cc-mini-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5V4.5Z"></path><path d="M4 4.5v17"></path><path d="M8 6h8M8 10h8M8 14h5"></path></svg></div>
+                        <div>
+                            <strong>Study Resources</strong>
+                            <small>Find what you need</small>
+                        </div>
+                    </div>
+
+                    <div class="cc-main-preview">
+
+                        <div class="cc-preview-header">
+                            <span>My Learning</span>
+                            <span class="cc-online-dot">ÃƒÂ¢Ã¢â‚¬â€Ã‚Â</span>
+                        </div>
+
+                        <div class="cc-progress-item">
+                            <div>
+                                <strong>Database Management</strong>
+                                <small>12 resources</small>
+                            </div>
+                            <span>80%</span>
+                        </div>
+
+                        <div class="cc-progress">
+                            <div style="width: 80%;"></div>
+                        </div>
+
+                        <div class="cc-progress-item mt-4">
+                            <div>
+                                <strong>Placement Preparation</strong>
+                                <small>Mock quizzes available</small>
+                            </div>
+                            <span>65%</span>
+                        </div>
+
+                        <div class="cc-progress">
+                            <div style="width: 65%;"></div>
+                        </div>
+
+                        <div class="cc-preview-actions">
+                            <span>Notes</span>
+                            <span>Placement</span>
+                            <span>Quiz</span>
+                        </div>
+
+                    </div>
+
+                    <div class="cc-floating-card cc-card-bottom">
+                        <div class="cc-mini-icon cc-purple"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"></path></svg></div>
+                        <div>
+                            <strong>Placement Ready</strong>
+                            <small>Keep practicing</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="cc-section">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <span class="cc-section-label">
+                EVERYTHING IN ONE PLACE
+            </span>
+
+            <h2 class="cc-section-title">
+                Everything you need to succeed
+            </h2>
+
+            <p class="cc-section-subtitle">
+                From semester notes to placement preparation,
+                CampusConnect keeps your academic journey organized.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="cc-feature-card">
+
+                    <div class="cc-feature-icon cc-blue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5V4.5Z"></path><path d="M4 4.5v17"></path><path d="M8 6h8M8 10h8M8 14h5"></path></svg></div>
+
+                    <h5>Share and Discover Notes</h5>
+
+                    <p>
+                        Upload your notes and discover resources
+                        shared by fellow students. Search by subject,
+                        semester, department, and category.
+                    </p>
+
+                    <a href="{{ url_for('auth.register') }}">
+                        Explore resources
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="cc-feature-card">
+
+                    <div class="cc-feature-icon cc-purple"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></div>
+
+                    <h5>Find Exactly What You Need</h5>
+
+                    <p>
+                        Smart search helps you quickly find notes,
+                        resources, and answers without browsing
+                        through endless files.
+                    </p>
+
+                    <a href="{{ url_for('auth.register') }}">
+                        Start searching
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="cc-feature-card">
+
+                    <div class="cc-feature-icon cc-orange"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"></path></svg></div>
+
+                    <h5>Prepare for Placements</h5>
+
+                    <p>
+                        Access placement resources, practice questions,
+                        interview preparation material, and mock quizzes.
+                    </p>
+
+                    <a href="{{ url_for('auth.register') }}">
+                        Start preparing
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="cc-how-section">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <span class="cc-section-label">
+                SIMPLE TO GET STARTED
+            </span>
+
+            <h2 class="cc-section-title">
+                Your campus journey in 4 steps
+            </h2>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-3">
+                <div class="cc-step-card">
+                    <div class="cc-step-number">01</div>
+                    <h5>Create an account</h5>
+                    <p>
+                        Register and create your CampusConnect profile.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="cc-step-card">
+                    <div class="cc-step-number">02</div>
+                    <h5>Explore resources</h5>
+                    <p>
+                        Search notes and academic resources shared
+                        by your campus community.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="cc-step-card">
+                    <div class="cc-step-number">03</div>
+                    <h5>Share and request</h5>
+                    <p>
+                        Upload useful notes or request resources
+                        that you cannot find.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="cc-step-card">
+                    <div class="cc-step-number">04</div>
+                    <h5>Prepare and grow</h5>
+                    <p>
+                        Practice quizzes and prepare for your
+                        placement journey.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="cc-cta-section">
+
+    <div class="container">
+
+        <div class="cc-cta">
+
+            <div>
+                <span class="cc-section-label cc-label-light">
+                    READY TO START?
+                </span>
+
+                <h2>
+                    Make your campus experience smarter.
+                </h2>
+
+                <p>
+                    Join CampusConnect and keep your learning resources
+                    and placement preparation in one place.
+                </p>
+            </div>
+
+            <div>
+                <a
+                    href="{{ url_for('auth.register') }}"
+                    class="btn btn-light btn-lg px-4"
+                >
+                    Create Free Account
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
