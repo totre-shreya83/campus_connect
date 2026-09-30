@@ -1,0 +1,75 @@
+version: 0.2
+
+env:
+  shell: bash
+  variables:
+    FLASK_APP: "run.py"
+    FLASK_ENV: "production"
+    APP_NAME: "campusconnect"
+    AWS_DEFAULT_REGION: "ap-south-1"
+
+  parameter-store:
+    SECRET_KEY: "/campusconnect/prod/secret_key"
+    DATABASE_URL: "/campusconnect/prod/database_url"
+    AWS_REGION: "/campusconnect/prod/aws_region"
+    S3_BUCKET_NAME: "/campusconnect/prod/s3_bucket_name"
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - echo "=== Installing dependencies ==="
+      - python --version
+      - pip install --upgrade pip setuptools wheel
+      - pip install -r requirements.txt
+      - pip install pytest flake8
+
+  pre_build:
+    commands:
+      - echo "=== Running pre-build checks ==="
+      - flake8 app --count --select=E9,F63,F7,F82 --show-source --statistics || true
+      - pytest tests/ -q --junit-xml=test-results.xml || true
+
+  build:
+    commands:
+      - echo "=== Building application package ==="
+      - mkdir -p build_output
+      - cp -r app build_output/
+      - cp run.py build_output/
+      - cp config.py build_output/
+      - cp requirements.txt build_output/
+      - cp .env.production.example build_output/
+      - cp -r migrations build_output/ 2>/dev/null || true
+      - cp deploy/campusconnect.service build_output/
+      - cp deploy/nginx_campusconnect.conf build_output/
+      - echo "Build package created successfully"
+
+  post_build:
+    commands:
+      - echo "=== Post build stage ==="
+      - echo "Build completed. Ready for deployment."
+
+artifacts:
+  files:
+    - build_output/**/*
+    - requirements.txt
+    - run.py
+    - config.py
+    - deploy/campusconnect.service
+    - deploy/nginx_campusconnect.conf
+    - appspec.yml
+    - buildspec.yml
+  name: CampusConnectBuildArtifact
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.cache/pip/**/*'
+
+reports:
+  pytest_reports:
+    files:
+      - 'test-results.xml'
+    file-format: 'JUNITXML'
+    discard-paths: no

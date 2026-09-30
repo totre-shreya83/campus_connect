@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /var/www/campusconnect
+
+hooks:
+  BeforeInstall:
+    - location: deploy/before_install.sh
+      timeout: 300
+      runas: root
+
+  ApplicationStop:
+    - location: deploy/stop_app.sh
+      timeout: 300
+      runas: ubuntu
+
+  ApplicationStart:
+    - location: deploy/start_app.sh
+      timeout: 300
+      runas: ubuntu
