@@ -23,6 +23,7 @@ from itsdangerous import (
 
 from app import db
 from app.models.user import User
+from app.services.mail_service import send_password_reset_email
 from app.forms.auth_forms import (
     RegisterForm,
     LoginForm,
@@ -184,9 +185,22 @@ def forgot_password():
                 _external=True
             )
 
-            # Development mode:
-            # Directly open the password reset page.
-            return redirect(reset_url)
+            sent = send_password_reset_email(
+                user,
+                reset_url
+            )
+
+            if sent:
+                flash(
+                    "A password reset link has been emailed to you.",
+                    "info"
+                )
+            else:
+                flash(
+                    f"Email sending is unavailable. "
+                    f"Dev link: {reset_url}",
+                    "info"
+                )
 
         else:
             flash(
@@ -195,12 +209,13 @@ def forgot_password():
                 "info"
             )
 
-            return redirect(url_for("auth.login"))
+        return redirect(url_for("auth.login"))
 
     return render_template(
         "auth/forgot_password.html",
         form=form
     )
+
 
 @auth_bp.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_password(token):
@@ -272,6 +287,23 @@ def reset_password(token):
     )
 
 
+@auth_bp.route("/toggle-email-notifications", methods=["POST"])
+@login_required
+def toggle_email_notifications():
+    current_user.email_notifications = (
+        request.form.get("enabled") == "on"
+    )
+
+    db.session.commit()
+
+    flash(
+        "Email notification preference updated.",
+        "success"
+    )
+
+    return redirect(url_for("auth.profile"))
+
+
 @auth_bp.route("/profile")
 @login_required
 def profile():
@@ -279,3 +311,4 @@ def profile():
         "profile.html",
         user=current_user
     )
+

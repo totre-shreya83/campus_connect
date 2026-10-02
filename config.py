@@ -1,4 +1,4 @@
-import os
+﻿import os
 
 from dotenv import load_dotenv
 
@@ -21,6 +21,16 @@ class Config:
     S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
     BACKUP_PREFIX = os.environ.get("BACKUP_PREFIX", "backups/db/")
 
+    SES_SENDER_EMAIL = os.environ.get(
+        "SES_SENDER_EMAIL",
+        "no-reply@campusconnect.example.com"
+    )
+
+    SES_ENABLED = os.environ.get(
+        "SES_ENABLED",
+        "false"
+    ).lower() == "true"
+
     MAX_CONTENT_LENGTH = 20 * 1024 * 1024
 
 
@@ -39,3 +49,4 @@ config_by_name = {
     "development": DevelopmentConfig,
     "production": ProductionConfig,
 }
+

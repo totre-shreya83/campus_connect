@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 
 from flask_login import UserMixin
 
@@ -58,6 +58,12 @@ class User(db.Model, UserMixin):
         default=True
     )
 
+    email_notifications = db.Column(
+        db.Boolean,
+        default=False,
+        nullable=False
+    )
+
     created_at = db.Column(
         db.DateTime,
         default=datetime.utcnow
@@ -100,3 +106,4 @@ class User(db.Model, UserMixin):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
