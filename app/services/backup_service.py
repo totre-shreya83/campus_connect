@@ -21,12 +21,20 @@ def log_backup(backup_type, status, location=None, size_mb=None):
 
 
 def _get_s3_client():
-    return boto3.client(
-        "s3",
-        aws_access_key_id=current_app.config["AWS_ACCESS_KEY_ID"],
-        aws_secret_access_key=current_app.config["AWS_SECRET_ACCESS_KEY"],
-        region_name=current_app.config["AWS_REGION"],
-    )
+    kwargs = {
+        "region_name": current_app.config["AWS_REGION"],
+    }
+
+    if (
+        current_app.config.get("AWS_ACCESS_KEY_ID")
+        and current_app.config.get("AWS_SECRET_ACCESS_KEY")
+    ):
+        kwargs["aws_access_key_id"] = current_app.config["AWS_ACCESS_KEY_ID"]
+        kwargs["aws_secret_access_key"] = current_app.config[
+            "AWS_SECRET_ACCESS_KEY"
+        ]
+
+    return boto3.client("s3", **kwargs)
 
 
 def get_storage_stats():
