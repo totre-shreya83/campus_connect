@@ -94,3 +94,9 @@ class Note(db.Model):
         db.DateTime,
         default=datetime.utcnow
     )
+    downloads = db.relationship(
+        "Download",
+        backref="note",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )

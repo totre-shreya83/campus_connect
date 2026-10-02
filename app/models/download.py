@@ -13,7 +13,7 @@ class Download(db.Model):
 
     note_id = db.Column(
         db.Integer,
-        db.ForeignKey("notes.id"),
+        db.ForeignKey("notes.id", ondelete="CASCADE"),
         nullable=False,
         index=True
     )
