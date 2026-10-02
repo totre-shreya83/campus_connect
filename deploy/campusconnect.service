@@ -5,14 +5,14 @@ After=network.target mysql.service
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/campusconnect
-Environment="PATH=/home/ubuntu/campusconnect/venv/bin"
-EnvironmentFile=/home/ubuntu/campusconnect/.env
-ExecStart=/home/ubuntu/campusconnect/venv/bin/gunicorn \
+WorkingDirectory=/var/www/campusconnect
+Environment="PATH=/var/www/campusconnect/venv/bin"
+EnvironmentFile=/var/www/campusconnect/.env
+ExecStart=/var/www/campusconnect/venv/bin/gunicorn \
     --workers 3 \
-    --bind unix:/home/ubuntu/campusconnect/campusconnect.sock \
-    --access-logfile /home/ubuntu/campusconnect/logs/access.log \
-    --error-logfile /home/ubuntu/campusconnect/logs/error.log \
+    --bind unix:/var/www/campusconnect/campusconnect.sock \
+    --access-logfile /var/www/campusconnect/logs/access.log \
+    --error-logfile /var/www/campusconnect/logs/error.log \
     run:app
 Restart=always
 RestartSec=5

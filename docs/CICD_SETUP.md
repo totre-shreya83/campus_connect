@@ -1,4 +1,4 @@
-﻿# CampusConnect — GitHub Actions CI/CD Setup
+# CampusConnect — GitHub Actions CI/CD Setup
 
 ## 1. Overview
 
@@ -10,7 +10,7 @@ GitHub → GitHub Actions → EC2 → Flask/Gunicorn → RDS + S3
 
 The production application is located on EC2 at:
 
-/home/ubuntu/campusconnect
+/var/www/campusconnect
 
 The production database is hosted on AWS RDS MySQL.
 
@@ -97,7 +97,7 @@ The production EC2 instance must contain:
 - Git
 - Python virtual environment
 - CampusConnect repository
-- `/home/ubuntu/campusconnect/venv`
+- `/var/www/campusconnect/venv`
 - Production `.env`
 - systemd service named `campusconnect`
 - GitHub repository access
@@ -113,13 +113,13 @@ The application should use the production RDS `DATABASE_URL` from the EC2 enviro
 
 The deployment script expects:
 
-/home/ubuntu/campusconnect
+/var/www/campusconnect
 
 The systemd service also uses this directory.
 
 The deployment process runs:
 
-cd /home/ubuntu/campusconnect
+cd /var/www/campusconnect
 
 and then executes:
 
@@ -221,7 +221,7 @@ git log --oneline
 
 git reset --hard <known-working-commit>
 
-source /home/ubuntu/campusconnect/venv/bin/activate
+source /var/www/campusconnect/venv/bin/activate
 
 flask db upgrade
 

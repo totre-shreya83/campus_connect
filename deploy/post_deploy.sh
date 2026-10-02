@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-APP_DIR="/home/ubuntu/campusconnect"
+APP_DIR="/var/www/campusconnect"
 
 echo "========================================"
 echo "CampusConnect Post-Deployment"

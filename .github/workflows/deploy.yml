@@ -90,6 +90,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ubuntu/campusconnect
+            cd /var/www/campusconnect
             chmod +x deploy/post_deploy.sh
             ./deploy/post_deploy.sh
