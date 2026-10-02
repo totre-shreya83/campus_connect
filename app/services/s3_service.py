@@ -5,18 +5,28 @@ from botocore.config import Config
 
 
 def _get_s3_client():
-    return boto3.client(
-        "s3",
-        aws_access_key_id=current_app.config["AWS_ACCESS_KEY_ID"],
-        aws_secret_access_key=current_app.config["AWS_SECRET_ACCESS_KEY"],
-        region_name=current_app.config["AWS_REGION"],
-        config=Config(
+    kwargs = {
+        "region_name": current_app.config["AWS_REGION"],
+        "config": Config(
             signature_version="s3v4",
             s3={
                 "addressing_style": "virtual"
             }
         )
-    )
+    }
+
+    # Local development can use explicit AWS credentials.
+    # Production can leave them blank and use the EC2 IAM role.
+    if (
+        current_app.config.get("AWS_ACCESS_KEY_ID")
+        and current_app.config.get("AWS_SECRET_ACCESS_KEY")
+    ):
+        kwargs["aws_access_key_id"] = current_app.config["AWS_ACCESS_KEY_ID"]
+        kwargs["aws_secret_access_key"] = current_app.config[
+            "AWS_SECRET_ACCESS_KEY"
+        ]
+
+    return boto3.client("s3", **kwargs)
 
 
 def upload_file_to_s3(file_obj, s3_key):
